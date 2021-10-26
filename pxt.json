@@ -1,0 +1,27 @@
+{
+    "name": "Life Saver 2.0",
+    "description": "",
+    "dependencies": {
+        "core": "*",
+        "radio": "*",
+        "microphone": "*",
+        "pxt-esp8266": "github:cytrontechnologies/pxt-esp8266#v1.1.4",
+        "pxt-edubit": "github:cytrontechnologies/pxt-edubit#v1.12.1"
+    },
+    "files": [
+        "main.blocks",
+        "main.ts",
+        "README.md"
+    ],
+    "testFiles": [
+        "test.ts"
+    ],
+    "targetVersions": {
+        "target": "4.0.16",
+        "targetId": "microbit"
+    },
+    "supportedTargets": [
+        "microbit"
+    ],
+    "preferredEditor": "blocksprj"
+}
