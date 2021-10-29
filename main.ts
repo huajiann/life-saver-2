@@ -85,7 +85,7 @@ basic.showIcon(IconNames.SmallHeart)
 initESP()
 basic.forever(function () {
     strip.clear()
-    temperature = Math.round(pins.analogReadPin(AnalogPin.P0) / 17.836)
+    temperature = Math.round(pins.analogReadPin(AnalogPin.P1) / 17.836)
     basic.showString("" + (temperature))
     send()
     basic.pause(200)
