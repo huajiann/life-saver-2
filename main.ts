@@ -5,6 +5,7 @@ function check () {
             blink()
             fan()
         }
+        strip.showColor(neopixel.colors(NeoPixelColors.Black))
     } else {
         strip.clear()
         music.stopAllSounds()
@@ -22,16 +23,14 @@ input.onButtonPressed(Button.A, function () {
         `)
 })
 function blink () {
-    strip.showColor(neopixel.colors(NeoPixelColors.Red))
+    strip.showColor(neopixel.colors(NeoPixelColors.Blue))
     basic.pause(100)
-    strip.showColor(neopixel.colors(NeoPixelColors.Black))
+    strip.showColor(neopixel.colors(NeoPixelColors.Red))
     basic.pause(100)
 }
 function alarm () {
-    music.playTone(988, music.beat(BeatFraction.Quarter))
-    basic.pause(100)
-    music.playTone(988, music.beat(BeatFraction.Quarter))
-    basic.pause(100)
+    music.playTone(988, music.beat(BeatFraction.Whole))
+    music.playTone(932, music.beat(BeatFraction.Whole))
     basic.pause(500)
     edubitMotors.brakeMotor(MotorChannel.M1)
 }
@@ -42,7 +41,7 @@ function initESP () {
     basic.pause(1000)
 }
 function fan () {
-    edubitMotors.runMotor(MotorChannel.M1, MotorDirection.Forward, 255)
+    edubitMotors.runMotor(MotorChannel.M1, MotorDirection.Forward, 128)
 }
 function send () {
     basic.showIcon(IconNames.Happy)
