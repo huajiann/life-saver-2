@@ -1,9 +1,9 @@
 function check () {
-    if (temperature >= 33) {
+    if (temperature >= 32) {
+        fan()
         for (let index = 0; index < 10; index++) {
             alarm()
             blink()
-            fan()
         }
         strip.showColor(neopixel.colors(NeoPixelColors.Black))
     } else {
@@ -32,7 +32,6 @@ function alarm () {
     music.playTone(988, music.beat(BeatFraction.Whole))
     music.playTone(932, music.beat(BeatFraction.Whole))
     basic.pause(500)
-    edubitMotors.brakeMotor(MotorChannel.M1)
 }
 function initESP () {
     esp8266.init(SerialPin.P12, SerialPin.P8, BaudRate.BaudRate115200)
@@ -40,8 +39,21 @@ function initESP () {
     basic.showString("" + (esp8266.isWifiConnected()))
     basic.pause(1000)
 }
+function sendLine () {
+    esp8266.uploadThingspeak(
+    "770O0NYVLRTXDBEV",
+    temperature,
+    1
+    )
+    basic.pause(500)
+    if (esp8266.isThingspeakUploaded()) {
+        basic.showIcon(IconNames.Yes)
+    } else {
+        basic.showIcon(IconNames.No)
+    }
+}
 function fan () {
-    edubitMotors.runMotor(MotorChannel.M1, MotorDirection.Forward, 128)
+    edubitMotors.runMotor(MotorChannel.M1, MotorDirection.Forward, 255)
 }
 function send () {
     basic.showIcon(IconNames.Happy)
@@ -67,6 +79,15 @@ input.onButtonPressed(Button.AB, function () {
 })
 radio.onReceivedString(function (receivedString) {
     signal = radio.receivedPacket(RadioPacketProperty.SignalStrength)
+    if (receivedString == "help") {
+        sendLine()
+    }
+    if (receivedString == "young") {
+        inside = true
+    }
+    if (receivedString == "elderly") {
+        inside = false
+    }
 })
 input.onButtonPressed(Button.B, function () {
     inside = false
@@ -86,7 +107,6 @@ basic.forever(function () {
     strip.clear()
     temperature = Math.round(pins.analogReadPin(AnalogPin.P1) / 17.836)
     basic.showString("" + (temperature))
-    send()
     basic.pause(200)
     if (inside == true) {
         basic.showLeds(`
@@ -96,6 +116,7 @@ basic.forever(function () {
             . . . . .
             . . # . .
             `)
+        send()
         if (Math.map(signal, -95, -42, 0, 9) <= 8) {
             check()
             basic.showIcon(IconNames.Surprised)
